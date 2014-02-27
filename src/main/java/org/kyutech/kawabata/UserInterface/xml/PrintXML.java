@@ -16,7 +16,7 @@ import org.xml.sax.SAXException;
 public class PrintXML {
  
     public static void main(String[] args) {
-        String filename = "test.xml";
+        String filename = "input.edm";
         try {
             new XmlReader(filename).showXml();
         } catch (SAXException e) {
