@@ -1,4 +1,4 @@
-package org.kyutech.kawabata.UserInterface;
+package org.kyutech.kawabata.UserInterface.ui;
 
 import java.net.URL;
 import java.util.ResourceBundle;

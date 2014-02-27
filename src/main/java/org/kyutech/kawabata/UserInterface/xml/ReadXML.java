@@ -2,9 +2,6 @@ package org.kyutech.kawabata.UserInterface.xml;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.Dictionary;
-import java.util.List;
-
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.Element;
@@ -18,6 +15,7 @@ import org.kyutech.kawabata.UserInterface.DictionaryClass;
  */
 public class ReadXML {
 
+	private static final String PNAME = "P-NAME"; //$NON-NLS-1$
 	DictionaryClass dic; 
 	/**
 	 * @param args
@@ -33,58 +31,48 @@ public class ReadXML {
 		this.dic = new DictionaryClass();
 		try {
 			Document doc = reader.read(path);
-			String xml = doc.asXML();
-			//System.out.println(xml);
-			for (int i = 0; i < doc.selectNodes("/ERD/ENTITY/ATTR").size(); i++) {
-				Element newElement = (Element) doc.selectNodes("/ERD/ENTITY/ATTR").get(i); //$NON-NLS-1$
-				String attributeValue = newElement.attribute("P-NAME").getValue(); //$NON-NLS-1$ 
-				String newAttributeValue = this.dic.dictionaryMap.get(attributeValue); 
-				System.out.println(newAttributeValue);
-				newElement.attribute("P-NAME").setValue(newAttributeValue);
-			}
-			for (int i = 0; i < doc.selectNodes("/ERD/ENTITY").size(); i++) {
-				Element newElement = (Element) doc.selectNodes("/ERD/ENTITY").get(i); //$NON-NLS-1$
-				String attributeValue = newElement.attribute("P-NAME").getValue(); //$NON-NLS-1$ 
-				String newAttributeValue = this.dic.dictionaryMap.get(attributeValue); 
-				System.out.println(newAttributeValue);
-				newElement.attribute("P-NAME").setValue(newAttributeValue);
-			}
-			System.out.println("index size: " +  doc.selectNodes("/ERD/ENTITY/INDEX").size());
-			for (int i = 0; i < doc.selectNodes("/ERD/ENTITY/INDEX").size(); i++) {
-				Element newElement = (Element) doc.selectNodes("/ERD/ENTITY/INDEX").get(i); //$NON-NLS-1$
-				String attributeValue = newElement.attribute("P-NAME").getValue(); //$NON-NLS-1$ 
-				String newAttributeValue = this.dic.dictionaryMap.get(attributeValue);
-				System.out.println(newAttributeValue);
-				System.out.println("index " + newElement.asXML());
-				newElement.attribute("P-NAME").setValue("TESTTEST");
-			}
-
-			xml = doc.asXML();
-			writingXML(doc);
-			System.out.println(xml);
+			changePName(doc,"/ERD/ENTITY/ATTR"); //$NON-NLS-1$
+			changePName(doc,"/ERD/ENTITY"); //$NON-NLS-1$
+			changePName(doc,"/ERD/ENTITY/INDEX"); //$NON-NLS-1$
+			
+			//変換したXMLを出力します
+			writingXML(doc,""); //$NON-NLS-1$
+			System.out.println(doc.asXML());
 		} catch (DocumentException e) {
 			e.printStackTrace();
 		}	
 
 	}
 	
+	private void changePName(Document doc, String xPath) {
+		// TODO Auto-generated method stub
+		for (int i = 0; i < doc.selectNodes(xPath).size(); i++) {
+			Element newElement = (Element) doc.selectNodes(xPath).get(i);
+			String attributeValue = newElement.attribute(PNAME).getValue();
+			String newAttributeValue = this.dic.japaneseToEnglish(attributeValue); 
+			System.out.println(newAttributeValue);
+			newElement.attribute(PNAME).setValue(newAttributeValue);
+		}
+	}
+
 	@SuppressWarnings({ "null", "resource" })
-	static void writingXML(Document document){
+	static void writingXML(Document document,String path){
 		FileOutputStream fos = null;  
 		OutputFormat format = null;
 		XMLWriter writer = null;
+		path = "output.edm"; //$NON-NLS-1$
 		try {
-		    fos = new FileOutputStream("output.edm"); 
+		    fos = new FileOutputStream(path);
 		    format = OutputFormat.createPrettyPrint();
 		    writer = new XMLWriter(fos, format);
 		    writer.write(document);
 		} catch (Exception e) {
-		    // エラー処理
+		    e.printStackTrace();
 		} finally {
 		    try {
 		        writer.close();
 		    } catch (IOException e) {
-		        // エラー処理
+			    e.printStackTrace();
 		    }
 		}
 	}

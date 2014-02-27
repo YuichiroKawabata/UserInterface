@@ -7,6 +7,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -15,24 +16,19 @@ import java.util.Map;
  * 
  */
 public class DictionaryClass {
+	/**
+	 * 変換元をキーとしたマップです
+	 */
 	public Map<String, String> dictionaryMap = new HashMap<>();
 	ArrayList<String> keyList = new ArrayList<String>();
-	/**
-	 * メインクラスです
-	 * @param args
-	 * @throws IOException
-	 */
-	public static void main(String[] args) throws IOException {
-		DictionaryClass dic = new DictionaryClass();
-	}
-
+	
 	/**
 	 * コンストラクタです
 	 * 
 	 * @throws IOException
 	 */
 	@SuppressWarnings("resource")
-	public DictionaryClass(){
+	public DictionaryClass() {
 		File read_file = new File("sampledoc/dictionary.csv"); //$NON-NLS-1$
 		BufferedReader br = null;
 		try {
@@ -45,16 +41,13 @@ public class DictionaryClass {
 		try {
 			while ((s = br.readLine()) != null) {
 				String[] sAry = s.split(","); //$NON-NLS-1$
-				if (sAry.length > 1) {
-					String key = sAry[0].replaceAll("\"","");
+				if (sAry.length > 0) {
+					String key = sAry[0].replaceAll("\"", ""); //$NON-NLS-1$ //$NON-NLS-2$
 					this.keyList.add(key);
-					String value = sAry[1].replaceAll("\"","");
-					//this.dictionaryMap.put(sAry[0],this.camelToSnake((sAry[1])));
-					this.dictionaryMap.put(key,this.camelToSnake(value));
-					//System.out.println(key + "   " +this.camelToSnake(this.dictionaryMap.get(key)));
-					//System.out.println(this.camelToSnake(this.dictionaryMap.get(sAry[0])));
-					//1System.out.println(sAry[0] + "   " + this.dictionaryMap.get("\"" +"プロジェクトマネージャー"+"\""));
-					System.out.println(splitString("プロジェクト名"));
+					String value = "";
+					if (sAry.length>1)
+						value = sAry[1].replaceAll("\"", ""); //$NON-NLS-1$ //$NON-NLS-2$
+					this.dictionaryMap.put(key, value);
 				}
 			}
 		} catch (IOException e) {
@@ -62,27 +55,35 @@ public class DictionaryClass {
 			e.printStackTrace();
 		}
 	}
-	
 
 	/**
-	 * 	 キャメルケース表記をスネークケース表記（小文字）へ
-	 * @param targetStr
+	 * キャメルケース表記をスネークケース表記（小文字）へ
+	 * 
+	 * @param str 変換対象
 	 * @return 返還後の文字列
 	 */
-	public String camelToSnake(String targetStr) {
-		if(targetStr.equals("")) return "";
-		String convertedStr = targetStr
-				.replaceAll("([A-Z]+)([A-Z][a-z])", "$1_$2")
-				.replaceAll("([a-z])([A-Z])", "$1_$2");
+	public String camelToSnake(String str) {
+		if (str.equals(""))return ""; //$NON-NLS-1$ //$NON-NLS-2$
+		String convertedStr = str.replaceAll(
+				"([A-Z]+)([A-Z][a-z])", "$1_$2") //$NON-NLS-1$ //$NON-NLS-2$
+				.replaceAll("([a-z])([A-Z])", "$1_$2"); //$NON-NLS-1$ //$NON-NLS-2$
 		return convertedStr.toUpperCase();
 	}
-	
-	private String splitString(String str){
-		for(int i=0;i<this.keyList.size();i++){
-			if(str.contains(keyList.get(i))&&keyList.get(i).length() < str.length()){
-				str.replaceAll(keyList.get(i),this.dictionaryMap.get(keyList.get(i)));
+
+	/**
+	 * 日本語のタグから英語のタグに変換します
+	 * @param str 変換対象
+	 * @return　返還後の文字列
+	 */
+	@SuppressWarnings("unchecked")
+	public String japaneseToEnglish(String str) {
+		Collections.sort(this.keyList,new sortComparate());
+		for (int i = 0; i < this.keyList.size(); i++) {
+			 if (str.contains(this.keyList.get(i))) {
+				str = str.replaceAll(this.keyList.get(i),
+						this.dictionaryMap.get(this.keyList.get(i)));
 			}
 		}
-		return str;
+		return camelToSnake(str);
 	}
 }
