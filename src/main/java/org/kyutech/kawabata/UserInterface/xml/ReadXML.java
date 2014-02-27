@@ -35,22 +35,30 @@ public class ReadXML {
 			Document doc = reader.read(path);
 			String xml = doc.asXML();
 			//System.out.println(xml);
-			List<?> nodes = doc.selectNodes("/ERD/ENTITY/ATTR"); //$NON-NLS-1$;
-			for (int i = 0; i < nodes.size(); i++) {
+			for (int i = 0; i < doc.selectNodes("/ERD/ENTITY/ATTR").size(); i++) {
 				Element newElement = (Element) doc.selectNodes("/ERD/ENTITY/ATTR").get(i); //$NON-NLS-1$
 				String attributeValue = newElement.attribute("P-NAME").getValue(); //$NON-NLS-1$ 
 				String newAttributeValue = this.dic.dictionaryMap.get(attributeValue); 
 				System.out.println(newAttributeValue);
 				newElement.attribute("P-NAME").setValue(newAttributeValue);
 			}
-			nodes = doc.selectNodes("/ERD/ENTITY"); //$NON-NLS-1$
-			for (int i = 0; i < nodes.size(); i++) {
+			for (int i = 0; i < doc.selectNodes("/ERD/ENTITY").size(); i++) {
 				Element newElement = (Element) doc.selectNodes("/ERD/ENTITY").get(i); //$NON-NLS-1$
 				String attributeValue = newElement.attribute("P-NAME").getValue(); //$NON-NLS-1$ 
 				String newAttributeValue = this.dic.dictionaryMap.get(attributeValue); 
 				System.out.println(newAttributeValue);
 				newElement.attribute("P-NAME").setValue(newAttributeValue);
 			}
+			System.out.println("index size: " +  doc.selectNodes("/ERD/ENTITY/INDEX").size());
+			for (int i = 0; i < doc.selectNodes("/ERD/ENTITY/INDEX").size(); i++) {
+				Element newElement = (Element) doc.selectNodes("/ERD/ENTITY/INDEX").get(i); //$NON-NLS-1$
+				String attributeValue = newElement.attribute("P-NAME").getValue(); //$NON-NLS-1$ 
+				String newAttributeValue = this.dic.dictionaryMap.get(attributeValue);
+				System.out.println(newAttributeValue);
+				System.out.println("index " + newElement.asXML());
+				newElement.attribute("P-NAME").setValue("TESTTEST");
+			}
+
 			xml = doc.asXML();
 			writingXML(doc);
 			System.out.println(xml);
