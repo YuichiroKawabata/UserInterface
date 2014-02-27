@@ -1,5 +1,6 @@
 package org.kyutech.kawabata.UserInterface.xml;
 
+import java.util.Dictionary;
 import java.util.Iterator;
 import java.util.List;
 
@@ -19,8 +20,10 @@ public class ReadXML {
 	 * @param args
 	 *            メインメソッドです
 	 */
+	private Dictionary dictionay;
 	public static void main(String[] args) {
 		SAXReader reader = new SAXReader();
+		
 		try {
 			Document doc = reader.read("sampledoc/input.edm"); //$NON-NLS-1$
 			Element rootElement = doc.getRootElement();
