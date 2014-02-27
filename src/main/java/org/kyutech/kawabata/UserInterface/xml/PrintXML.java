@@ -2,125 +2,128 @@ package org.kyutech.kawabata.UserInterface.xml;
 
 import java.io.File;
 import java.io.IOException;
-
-import javax.xml.parsers.DocumentBuilder;
+ 
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-
+ 
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
-
+ 
 public class PrintXML {
-	File file;
-	public PrintXML(File file) {
-		this.file = file;
-	}
-
-	public static void main(String[] args) {
-		System.out.println("test");
-		File filemain = new File("tt.xml");
-		PrintXML readXML = new PrintXML(filemain);
-		readXML.runner();
-	}
-	
-	public void runner() {
-		DocumentBuilderFactory factory;
-		DocumentBuilder        builder;
-		Node root;
-		Node child;
-		NodeList XMLdata;
-		try {
-			factory = DocumentBuilderFactory.newInstance();
-			builder = factory.newDocumentBuilder();
-			factory.setIgnoringElementContentWhitespace(true);
-			factory.setIgnoringComments(true);
-			factory.setValidating(true);
-			root    = builder.parse(this.file);
-			
-			showNodes(root, "");
-		} catch (ParserConfigurationException e0) {
-			System.out.println(e0.getMessage());
-		} catch (SAXException e1){
-			System.out.println(e1.getMessage());
-		} catch (IOException e2) {
-			System.out.println(e2.getMessage());
-		}
-	}
-
-	/**
-	 * nodeの子ノードを全て表示します。子ノードがない場合はなにも出力しません。 spaceはノードを表示する前の行頭のスペースです。
-	 * （再帰処理をしているので注意）
-	 */
-	public void showNodes(Node node, String space) {
-		NodeList nodes = node.getChildNodes();
-		for (int i = 0; i < nodes.getLength(); i++) {
-			Node node2 = nodes.item(i);
-			System.out.println(space + "「" + node2.getNodeName() + "/"
-					+ node2.getNodeValue() + "/" + getTypeMes(node2) + "」");
-			showNodes(node2, space + "    ");
-		}
-	}
-
-	/** ノードの種類を示します */
-	public String getTypeMes(Node node) {
-		String s = null;
-		switch (node.getNodeType()) {
-		case Node.ATTRIBUTE_NODE:
-			s = "Attr";
-			break;
-		case Node.CDATA_SECTION_NODE:
-			s = "CDATASection";
-			break;
-		case Node.COMMENT_NODE:
-			s = "Comment";
-		case Node.DOCUMENT_FRAGMENT_NODE:
-			s = "DocumentFragment";
-		case Node.DOCUMENT_NODE:
-			s = "Document";
-		case Node.DOCUMENT_TYPE_NODE:
-			s = "DocumentType";
-		case Node.ELEMENT_NODE:
-			s = "Element";
-		case Node.ENTITY_NODE:
-			s = "Entity";
-			break;
-		case Node.ENTITY_REFERENCE_NODE:
-			s = "EntityReference";
-		case Node.NOTATION_NODE:
-			s = "Notation";
-			break;
-		case Node.PROCESSING_INSTRUCTION_NODE:
-			s = "ProcessingInstruction";
-		case Node.TEXT_NODE:
-			s = "Text";
-		default:
-			break;
-		}
-		return s;
-	}
-
-	private Node getRootNode(File file) {
-		// TODO Auto-generated method stub
-		// DocumentBuilderインスタンスの生成
-		DocumentBuilder documentBuilder = null;
-		try {
-			documentBuilder = DocumentBuilderFactory.newInstance()
-					.newDocumentBuilder();
-		} catch (ParserConfigurationException e) {
-			e.printStackTrace();
-			return null;
-		}
-		Document document = null;
-		try {
-			document = documentBuilder.parse(file);
-		} catch (Exception e) {
-			// TODO: handle exception
-			e.printStackTrace();
-		}
-
-		return document;
-	}
+ 
+    public static void main(String[] args) {
+        String filename = "test.xml";
+        try {
+            new XmlReader(filename).showXml();
+        } catch (SAXException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ParserConfigurationException e) {
+            e.printStackTrace();
+        }
+    }
+ 
+    static class XmlReader {
+ 
+        private final String filename;
+ 
+        /**
+         * コンストラクタ
+         * @param filename 読込ファイルパス
+         */
+        public XmlReader(String filename) {
+            this.filename = filename;
+        }
+ 
+        /**
+         * XMLファイルの内容を表示する
+         * @throws SAXException
+         * @throws IOException
+         * @throws ParserConfigurationException
+         */
+        public void showXml() throws SAXException, IOException,
+                ParserConfigurationException {
+            Document doc = DocumentBuilderFactory.newInstance()
+                    .newDocumentBuilder().parse(new File(filename));
+            showChildNodes(doc.getChildNodes(), 0);
+        }
+ 
+        /**
+         * XMLの要素を取り出しつつ表示する
+         * @param nodeList
+         * @param level
+         */
+        private void showChildNodes(NodeList nodeList, int level) {
+            if (nodeList == null) {
+                return;
+            }
+ 
+            for (int i = 0; i < nodeList.getLength(); i++) {
+                Node node = nodeList.item(i);
+                if (node.getNodeType() == Node.TEXT_NODE) {
+                    String text = node.getNodeValue().trim();
+                    if (!text.isEmpty()) {
+                        System.out.println(String.format("%sText:%s",
+                                indent(level), text));
+                    }
+                    continue;
+                }
+                if (!(node instanceof Element)) {
+                    continue;
+                }
+ 
+                Element element = (Element) node;
+                String tagName = element.getTagName();
+                String attributes = getAttributeStrings(element.getAttributes());
+                System.out.println(String.format(
+                        "%sTagName:%s, Attributes:[%s]", indent(level), tagName,
+                        attributes));
+ 
+                showChildNodes(element.getChildNodes(), level + 1);
+            }
+        }
+ 
+        /**
+         * Attributesの内容を文字列で取得
+         * @param attributes
+         * @return Attributesの文字列
+         */
+        private String getAttributeStrings(NamedNodeMap attributes) {
+            if (attributes == null) {
+                return "";
+            }
+ 
+            StringBuffer sb = new StringBuffer();
+            for (int i = 0; i < attributes.getLength(); i++) {
+                Node node = attributes.item(i);
+                String nodeName = node.getNodeName();
+                String nodeValue = node.getNodeValue();
+                sb.append(nodeName).append("=").append(nodeValue);
+ 
+                if (i < attributes.getLength() - 1) {
+                    sb.append(", ");
+                }
+            }
+ 
+            return sb.toString();
+        }
+    }
+ 
+    /**
+     * インデント作成
+     * @param level
+     * @return インデント文字列
+     */
+    public static String indent(int level) {
+        StringBuffer sb = new StringBuffer();
+        for (int i = 0; i < level; i++) {
+            sb.append('\t');
+        }
+        return sb.toString();
+    }
 }
