@@ -22,7 +22,7 @@ public class ReadXML {
 	 */
 	public static void main(String[] args) {
 		ReadXML readXml = new ReadXML();
-		readXml.encodeXML("sampledoc/input.edm","output.edm"); //$NON-NLS-1$ //$NON-NLS-2$
+		readXml.encodeXML("src/main/resources/sampledoc/input.edm","output.edm"); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 	
 	/**

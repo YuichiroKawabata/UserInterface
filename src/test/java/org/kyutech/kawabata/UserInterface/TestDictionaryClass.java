@@ -16,8 +16,8 @@ public class TestDictionaryClass {
 	 * 変換が正しく行われているか確認するテストです
 	 */
 	@SuppressWarnings("static-method")
-	@Ignore
 	@Test
+	@Ignore
 	public void dictionaryConvertTest() {
 		DictionaryClass dic = new DictionaryClass();
 		assertThat(dic.japaneseToEnglish("プロジェクトマネージャー"), is("PM")); //$NON-NLS-1$ //$NON-NLS-2$

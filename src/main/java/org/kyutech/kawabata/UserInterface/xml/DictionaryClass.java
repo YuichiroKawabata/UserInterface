@@ -5,6 +5,9 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -30,7 +33,16 @@ public class DictionaryClass {
 	 */
 	@SuppressWarnings({ "resource", "unchecked" })
 	public DictionaryClass() {
-		File read_file = new File("sampledoc/dictionary.csv"); //$NON-NLS-1$
+//		File read_file = new File("src/main/resources/sampledoc/dictionary.csv"); //$NON-NLS-1$
+		URL url = getClass().getClassLoader().getResource("sampledoc/dictionary.csv");
+		URI uri = null;
+		try {
+			uri = url.toURI();
+		} catch (URISyntaxException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		File read_file= new File(uri);
 		BufferedReader br = null;
 		try {
 			br = new BufferedReader(new FileReader(read_file));
