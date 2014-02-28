@@ -20,8 +20,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 /**
- * @author kawabata
- * javafxフレームワークのメインクラスです
+ * @author kawabata javafxフレームワークのメインクラスです
  */
 public class MainApp extends Application {
 
@@ -32,7 +31,7 @@ public class MainApp extends Application {
 	public void start(final Stage primaryStage) {
 		Button inputFileSelectBtn = new Button();
 		inputFileSelectBtn.setText("変換するファイルを選択してください"); //$NON-NLS-1$
-		
+
 		final FileChooser fc = new FileChooser();
 		fc.setTitle("変換するファイルを選択してください"); //$NON-NLS-1$
 
@@ -61,9 +60,10 @@ public class MainApp extends Application {
 			public void handle(ActionEvent event) {
 				File importFile = outFc.showDialog(primaryStage);
 				if (importFile != null) {
-					outputFilePathLabel
-							.setText(importFile.getPath().toString()+"\\output.edm"); //$NON-NLS-1$
-					MainApp.this.outputPath = importFile.getPath().toString()+"/output.edm"; //$NON-NLS-1$
+					outputFilePathLabel.setText(importFile.getPath().toString()
+							+ "\\output.edm"); //$NON-NLS-1$
+					MainApp.this.outputPath = importFile.getPath().toString()
+							+ "/output.edm"; //$NON-NLS-1$
 				}
 			}
 		});
@@ -75,10 +75,6 @@ public class MainApp extends Application {
 			@Override
 			public void handle(ActionEvent event) {
 				XMLEncorder readXml = new XMLEncorder();
-				//DictionaryClass dic =new DictionaryClass();
-				//resultLabel.setText("ボタンが押されました "+ DictionaryClass.class.getName().toString() + "   " + ReadXML.class.getName().toString()+"\n"+ readXml.toString() + dic.toString() );
-				
-				//resultLabel.setText(new DictionaryClass().keyList.toString());
 				resultLabel.setText(readXml.encodeXML(MainApp.this.inputPath,
 						MainApp.this.outputPath));
 
@@ -96,7 +92,7 @@ public class MainApp extends Application {
 		hbox2.getChildren().addAll(outputFileSelectBtn, outputFilePathLabel);
 		VBox vbox = new VBox(30d);
 		vbox.setAlignment(Pos.CENTER);
-		vbox.getChildren().addAll(hbox1, hbox2, hbox3,resultLabel);
+		vbox.getChildren().addAll(hbox1, hbox2, hbox3, resultLabel);
 
 		StackPane root = new StackPane();
 		root.getChildren().addAll(vbox);
