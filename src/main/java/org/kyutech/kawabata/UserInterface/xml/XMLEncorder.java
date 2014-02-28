@@ -12,7 +12,7 @@ import org.dom4j.io.XMLWriter;
 /**
  * @author kawabata dom4jライブラリを使用してXMLファイルを読み込むクラスです
  */
-public class ReadXML {
+public class XMLEncorder {
 
 	private static final String PNAME = "P-NAME"; //$NON-NLS-1$
 	DictionaryClass dic; 
@@ -21,7 +21,7 @@ public class ReadXML {
 	 *            メインメソッドです
 	 */
 	public static void main(String[] args) {
-		ReadXML readXml = new ReadXML();
+		XMLEncorder readXml = new XMLEncorder();
 		readXml.encodeXML("src/main/resources/sampledoc/input.edm","output.edm"); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 	
@@ -33,7 +33,13 @@ public class ReadXML {
 	 */
 	public String encodeXML(String inputPath,String outputPath){
 		SAXReader reader = new SAXReader();
-		this.dic = new DictionaryClass();
+		try {
+			this.dic = new DictionaryClass();			
+		} catch (Exception e) {
+			// TODO: handle exception
+			return e.toString();
+		}
+
 		try {
 			Document doc = reader.read(inputPath);
 			changePName(doc,"/ERD/ENTITY/ATTR"); //$NON-NLS-1$

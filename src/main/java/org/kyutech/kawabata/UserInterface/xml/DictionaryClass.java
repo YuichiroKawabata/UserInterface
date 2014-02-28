@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -35,6 +36,8 @@ public class DictionaryClass {
 	public DictionaryClass() {
 //		File read_file = new File("src/main/resources/sampledoc/dictionary.csv"); //$NON-NLS-1$
 		URL url = getClass().getClassLoader().getResource("sampledoc/dictionary.csv");
+		InputStream in = getClass().getClassLoader().getResourceAsStream("sampledoc/dictionary.csv");
+		System.out.println(in.toString());
 		URI uri = null;
 		try {
 			uri = url.toURI();

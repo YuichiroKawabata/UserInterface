@@ -3,7 +3,7 @@ package org.kyutech.kawabata.UserInterface;
 import java.io.File;
 
 import org.kyutech.kawabata.UserInterface.xml.DictionaryClass;
-import org.kyutech.kawabata.UserInterface.xml.ReadXML;
+import org.kyutech.kawabata.UserInterface.xml.XMLEncorder;
 
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -62,7 +62,7 @@ public class MainApp extends Application {
 				File importFile = outFc.showDialog(primaryStage);
 				if (importFile != null) {
 					outputFilePathLabel
-							.setText(importFile.getPath().toString()+"/output.edm"); //$NON-NLS-1$
+							.setText(importFile.getPath().toString()+"\\output.edm"); //$NON-NLS-1$
 					MainApp.this.outputPath = importFile.getPath().toString()+"/output.edm"; //$NON-NLS-1$
 				}
 			}
@@ -74,13 +74,13 @@ public class MainApp extends Application {
 		changeBtn.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				ReadXML readXml = new ReadXML();
-				DictionaryClass dic =new DictionaryClass();
-				resultLabel.setText("ボタンが押されました "+ DictionaryClass.class.getName().toString() + "   " + ReadXML.class.getName().toString()+"\n"+ readXml.toString() + dic.toString() );
+				XMLEncorder readXml = new XMLEncorder();
+				//DictionaryClass dic =new DictionaryClass();
+				//resultLabel.setText("ボタンが押されました "+ DictionaryClass.class.getName().toString() + "   " + ReadXML.class.getName().toString()+"\n"+ readXml.toString() + dic.toString() );
 				
 				//resultLabel.setText(new DictionaryClass().keyList.toString());
-				//resultLabel.setText(readXml.encodeXML(MainApp.this.inputPath,
-				//		MainApp.this.outputPath));
+				resultLabel.setText(readXml.encodeXML(MainApp.this.inputPath,
+						MainApp.this.outputPath));
 
 			}
 		});
