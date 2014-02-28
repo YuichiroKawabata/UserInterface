@@ -23,25 +23,29 @@ public class ReadXML {
 	 */
 	public static void main(String[] args) {
 		ReadXML readXml = new ReadXML();
-		readXml.encodeXML("sampledoc/input.edm"); //$NON-NLS-1$
+		readXml.encodeXML("sampledoc/input.edm","output.edm"); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 	
-	void encodeXML(String path){
+	/**
+	 * XMLを変換して出力します
+	 * @param inputPath
+	 * @param outputPath
+	 * @return 変換が成功したかを返します
+	 */
+	public String encodeXML(String inputPath,String outputPath){
 		SAXReader reader = new SAXReader();
 		this.dic = new DictionaryClass();
 		try {
-			Document doc = reader.read(path);
+			Document doc = reader.read(inputPath);
 			changePName(doc,"/ERD/ENTITY/ATTR"); //$NON-NLS-1$
 			changePName(doc,"/ERD/ENTITY"); //$NON-NLS-1$
 			changePName(doc,"/ERD/ENTITY/INDEX"); //$NON-NLS-1$
-			
-			//変換したXMLを出力します
-			writingXML(doc,""); //$NON-NLS-1$
-			System.out.println(doc.asXML());
+			//変換したXMLを出力します(変換結果を返します)
+			return writingXML(doc,outputPath);		
 		} catch (DocumentException e) {
 			e.printStackTrace();
-		}	
-
+			return "変換失敗しました" + e.toString();	 //$NON-NLS-1$
+		}
 	}
 	
 	private void changePName(Document doc, String xPath) {
@@ -56,23 +60,26 @@ public class ReadXML {
 	}
 
 	@SuppressWarnings({ "null", "resource" })
-	static void writingXML(Document document,String path){
+	static String writingXML(Document document,String path){
 		FileOutputStream fos = null;  
 		OutputFormat format = null;
 		XMLWriter writer = null;
-		path = "output.edm"; //$NON-NLS-1$
 		try {
 		    fos = new FileOutputStream(path);
 		    format = OutputFormat.createPrettyPrint();
 		    writer = new XMLWriter(fos, format);
 		    writer.write(document);
+		    System.out.println(document.asXML());
+		    return "変換完了しました"; //$NON-NLS-1$
 		} catch (Exception e) {
 		    e.printStackTrace();
+			return "変換失敗しました" + e.toString();	 //$NON-NLS-1$
 		} finally {
 		    try {
 		        writer.close();
 		    } catch (IOException e) {
 			    e.printStackTrace();
+				return "変換失敗しました" + e.toString();	 //$NON-NLS-1$
 		    }
 		}
 	}

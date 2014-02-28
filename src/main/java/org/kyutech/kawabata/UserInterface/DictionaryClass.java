@@ -27,7 +27,7 @@ public class DictionaryClass {
 	 * 
 	 * @throws IOException
 	 */
-	@SuppressWarnings("resource")
+	@SuppressWarnings({ "resource", "unchecked" })
 	public DictionaryClass() {
 		File read_file = new File("sampledoc/dictionary.csv"); //$NON-NLS-1$
 		BufferedReader br = null;
@@ -54,6 +54,7 @@ public class DictionaryClass {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		Collections.sort(this.keyList,new sortComparate());
 	}
 
 	/**
@@ -77,7 +78,7 @@ public class DictionaryClass {
 	 */
 	@SuppressWarnings("unchecked")
 	public String japaneseToEnglish(String str) {
-		Collections.sort(this.keyList,new sortComparate());
+		
 		for (int i = 0; i < this.keyList.size(); i++) {
 			 if (str.contains(this.keyList.get(i))) {
 				str = str.replaceAll(this.keyList.get(i),
