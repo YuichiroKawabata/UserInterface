@@ -19,7 +19,6 @@ public class TestDictionaryClass {
 	@Test
 	public void dictionaryConvertTest() {
 		DictionaryClass dic = new DictionaryClass();
-		System.out.println(dic.dictionaryMap.keySet());
 		assertThat(dic.japaneseToEnglish("プロジェクトマネージャー"), is("PM")); //$NON-NLS-1$ //$NON-NLS-2$
 		assertThat(dic.japaneseToEnglish("プロジェクトリーダー"), is("PL")); //$NON-NLS-1$ //$NON-NLS-2$
 		assertThat(dic.japaneseToEnglish("プロジェクト名"), is("PROJECT_NM")); //$NON-NLS-1$ //$NON-NLS-2$

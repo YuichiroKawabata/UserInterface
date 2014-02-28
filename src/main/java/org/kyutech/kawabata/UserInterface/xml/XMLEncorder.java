@@ -2,6 +2,8 @@ package org.kyutech.kawabata.UserInterface.xml;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Dictionary;
+
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.Element;
@@ -44,6 +46,7 @@ public class XMLEncorder {
 			Document doc = reader.read(inputPath);
 			changePName(doc,"/ERD/ENTITY/ATTR"); //$NON-NLS-1$
 			changePName(doc,"/ERD/ENTITY"); //$NON-NLS-1$
+			changePName(doc,"/ERD/RELATION"); //$NON-NLS-1$
 			changePName(doc,"/ERD/ENTITY/INDEX"); //$NON-NLS-1$
 			//変換したXMLを出力します(変換結果を返します)
 			return writingXML(doc,outputPath);		

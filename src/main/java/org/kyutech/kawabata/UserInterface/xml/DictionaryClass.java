@@ -11,7 +11,8 @@ import java.util.Map;
 
 
 /**
- * @author kawabata 辞書クラスです。辞書データの格納や日本語から英語への変換を扱えます
+ * @author kawabata
+ * 辞書クラスです。辞書データの格納や日本語から英語への変換を扱えます
  */
 public class DictionaryClass {
 	/**
