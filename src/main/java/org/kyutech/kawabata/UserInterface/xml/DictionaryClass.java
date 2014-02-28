@@ -9,7 +9,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.kyutech.kawabata.UserInterface.sortComparate;
 
 /**
  * @author kawabata 辞書クラスです。辞書データの格納や日本語から英語への変換を扱えます
@@ -49,7 +48,7 @@ public class DictionaryClass {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		Collections.sort(this.keyList,new sortComparate());
+		Collections.sort(this.keyList,new SortComparate());
 	}
 
 	/**
