@@ -8,7 +8,6 @@ import org.dom4j.Element;
 import org.dom4j.io.OutputFormat;
 import org.dom4j.io.SAXReader;
 import org.dom4j.io.XMLWriter;
-import org.kyutech.kawabata.UserInterface.DictionaryClass;
 
 /**
  * @author kawabata dom4jライブラリを使用してXMLファイルを読み込むクラスです

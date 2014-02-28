@@ -1,6 +1,5 @@
-package org.kyutech.kawabata.UserInterface;
+package org.kyutech.kawabata.UserInterface.xml;
 
-import java.awt.List;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -11,9 +10,11 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.kyutech.kawabata.UserInterface.sortComparate;
+
 /**
  * @author kawabata
- * 
+ * 辞書クラスです。辞書データの格納や日本語から英語への変換を扱えます
  */
 public class DictionaryClass {
 	/**
@@ -61,7 +62,7 @@ public class DictionaryClass {
 	 * キャメルケース表記をスネークケース表記（小文字）へ
 	 * 
 	 * @param str 変換対象
-	 * @return 返還後の文字列
+	 * @return 変換後の文字列
 	 */
 	public String camelToSnake(String str) {
 		if (str.equals(""))return ""; //$NON-NLS-1$ //$NON-NLS-2$
@@ -74,7 +75,7 @@ public class DictionaryClass {
 	/**
 	 * 日本語のタグから英語のタグに変換します
 	 * @param str 変換対象
-	 * @return　返還後の文字列
+	 * @return　変換後の文字列
 	 */
 	@SuppressWarnings("unchecked")
 	public String japaneseToEnglish(String str) {

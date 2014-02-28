@@ -2,8 +2,8 @@ package org.kyutech.kawabata.UserInterface;
 
 import java.io.File;
 
+import org.kyutech.kawabata.UserInterface.xml.DictionaryClass;
 import org.kyutech.kawabata.UserInterface.xml.ReadXML;
-import org.kyutech.kawabata.UserInterface.DictionaryClass;
 
 import javafx.application.Application;
 import javafx.event.ActionEvent;
