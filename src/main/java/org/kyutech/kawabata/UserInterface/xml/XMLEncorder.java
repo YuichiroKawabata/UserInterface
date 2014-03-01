@@ -67,24 +67,25 @@ public class XMLEncorder {
 		}
 	}
 
-	@SuppressWarnings({ "null", "resource" })
+	@SuppressWarnings({ "null", "resource", "finally" })
 	static String writingXML(Document document,String path){
 		FileOutputStream fos = null;  
 		OutputFormat format = null;
 		XMLWriter writer = null;
 		try {
 		    fos = new FileOutputStream(path);
-		    format = OutputFormat.createPrettyPrint();
-		    writer = new XMLWriter(fos, format);
+//		    format = OutputFormat.createPrettyPrint();
+//		    writer = new XMLWriter(fos, format);
+		    writer = new XMLWriter(fos);
 		    writer.write(document);
 		    System.out.println(document.asXML());
-		    return "変換完了しました"; //$NON-NLS-1$
 		} catch (Exception e) {
 		    e.printStackTrace();
 			return "変換失敗しました" + e.toString();	 //$NON-NLS-1$
 		} finally {
 		    try {
 		        writer.close();
+			    return "変換完了しました"; //$NON-NLS-1$
 		    } catch (IOException e) {
 			    e.printStackTrace();
 				return "変換失敗しました" + e.toString();	 //$NON-NLS-1$
